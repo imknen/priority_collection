@@ -7,21 +7,20 @@
 #include <set>
 #include <utility>
 #include <vector>
+#include <map>
+#include <deque>
 
 using namespace std;
 
 template <typename T>
 class PriorityCollection {
 public:
-  using Id = typename list<pair<T, int>>::iterator;
+  using Id = T*;
 
   // Добавить объект с нулевым приоритетом
   // с помощью перемещения и вернуть его идентификатор
   Id Add(T object)
   {
-  	Id ret = data.insert(data.end(), make_pair(move(object), 0));
-	s_id.insert(ret);
-	return ret;
   }
 
   // Добавить все элементы диапазона [range_begin, range_end)
@@ -29,28 +28,44 @@ public:
   // в диапазон [ids_begin, ...)
   template <typename ObjInputIt, typename IdOutputIt>
   void Add(ObjInputIt range_begin, ObjInputIt range_end,
-           IdOutputIt ids_begin);
+           IdOutputIt ids_begin)
+	{
+		
+	}
 
   // Определить, принадлежит ли идентификатор какому-либо
   // хранящемуся в контейнере объекту
-  bool IsValid(Id id) const;
+  bool IsValid(Id id) const
+	{
+	
+	}
 
   // Получить объект по идентификатору
-  const T& Get(Id id) const;
+  const T& Get(Id id) const
+	{
+	
+	}
 
   // Увеличить приоритет объекта на 1
   void Promote(Id id);
 
   // Получить объект с максимальным приоритетом и его приоритет
-  pair<const T&, int> GetMax() const;
+  pair<const T&, int> GetMax() const
+	{
+	
+	}
 
   // Аналогично GetMax, но удаляет элемент из контейнера
-  pair<T, int> PopMax();
+  pair<T, int> PopMax()
+	{
+	
+	}
 
 private:
   // Приватные поля и методы
-  list<pair<T, int>> data;
-  set<Id> s_id;
+  deque<T> data;
+  map<int, list<Id>> priority_to_data;
+	set<Id> id;
 };
 
 
