@@ -63,9 +63,9 @@ public:
 
 private:
   // Приватные поля и методы
-  deque<T> data;
+  list<T> data;
   map<int, list<Id>> priority_to_data;
-	map<Id, typename deque<T>::iterator> id_to_position;
+	map<Id, typename list<T>::iterator> id_to_position;
 };
 
 
