@@ -22,7 +22,10 @@ public:
   Id Add(T object)
   {
 		data.push_back(move(object));
-		priority_to_data[0].push_back(data.back());
+		priority_to_data[0].push_back(&data.back());
+		id_to_position[&data.back()] = --(priority_to_data[0].end());
+		
+		return &data.back();
   }
 
   // Добавить все элементы диапазона [range_begin, range_end)
@@ -67,7 +70,7 @@ private:
   // Приватные поля и методы
   list<T> data;
   map<int, list<Id>> priority_to_data;
-	map<Id, typename list<T>::iterator> id_to_position;
+	map<Id, typename list<Id>::iterator> id_to_position;
 };
 
 
