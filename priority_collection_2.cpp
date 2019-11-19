@@ -21,6 +21,8 @@ public:
   // с помощью перемещения и вернуть его идентификатор
   Id Add(T object)
   {
+		data.push_back(move(object));
+		priority_to_data[0].push_back(data.back());
   }
 
   // Добавить все элементы диапазона [range_begin, range_end)
