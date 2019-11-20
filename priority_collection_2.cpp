@@ -35,7 +35,11 @@ public:
   void Add(ObjInputIt range_begin, ObjInputIt range_end,
            IdOutputIt ids_begin)
 	{
-		
+		list <typename IdOutputIt::value_type> result;
+		for (auto it : {range_begin, range_end}) {
+			result.push_back(Add(move(*it)));
+		}
+		move(result.begin(), result.end(), back_inserter(ids_begin));
 	}
 
   // Определить, принадлежит ли идентификатор какому-либо
