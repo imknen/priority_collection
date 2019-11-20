@@ -74,7 +74,7 @@ private:
   // Приватные поля и методы
   list<T> data;
   map<int, list<Id>> priority_to_data;
-	map<Id, typename list<Id>::iterator> id_to_position;
+	map<Id, pair<typename map<int, list<Id>>::iterator, typename list<Id>::iterator>> id_to_position;
 };
 
 
