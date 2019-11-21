@@ -22,7 +22,7 @@ public:
   Id Add(T object)
   {
 		auto it_obj = data.insert(data.end(), move(object));	
-	//	auto it_p_to_d = priority_to_data.insert(0, it_obj);
+		auto it_p_to_d = priority_to_data.insert({0, it_obj});
 	}
 
   // Добавить все элементы диапазона [range_begin, range_end)
