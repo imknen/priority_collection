@@ -21,12 +21,9 @@ public:
   // с помощью перемещения и вернуть его идентификатор
   Id Add(T object)
   {
-		data.push_back(move(object));
-		priority_to_data[0].push_back(&data.back());
-		id_to_position[&data.back()] = --(priority_to_data[0].end());
-		
-		return &data.back();
-  }
+		auto it_obj = data.insert(data.end(), move(object));	
+	//	auto it_p_to_d = priority_to_data.insert(0, it_obj);
+	}
 
   // Добавить все элементы диапазона [range_begin, range_end)
   // с помощью перемещения, записав выданные им идентификаторы
@@ -35,11 +32,7 @@ public:
   void Add(ObjInputIt range_begin, ObjInputIt range_end,
            IdOutputIt ids_begin)
 	{
-		list <typename IdOutputIt::value_type> result;
-		for (auto it : {range_begin, range_end}) {
-			result.push_back(Add(move(*it)));
-		}
-		move(result.begin(), result.end(), back_inserter(ids_begin));
+
 	}
 
   // Определить, принадлежит ли идентификатор какому-либо
@@ -73,8 +66,8 @@ public:
 private:
   // Приватные поля и методы
   list<T> data;
-  map<int, list<Id>> priority_to_data;
-	map<Id, pair<typename map<int, list<Id>>::iterator, typename list<Id>::iterator>> id_to_position;
+  map<int, list<typename list<T>::iterator>> priority_to_data;
+	map<Id, pair<typename map<int, list<typename list <T>::iterator>>::iterator, typename list<Id>::iterator>> id_to_position;
 };
 
 
