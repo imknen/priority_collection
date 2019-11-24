@@ -1,14 +1,39 @@
-персонализация git
-$ git config --global user.name "John Doe"
-$ git config --global user.email johndoe@example.com
+краткая памятка по GIT для меня||||||
+=====================================
 
-проверка первоначальных настроек
- git config --list
+установка и настройка git
+sudo apt install git
+# add-apt-repository ppa:git-core/ppa
+# apt update; apt install git
+
+устанавливаем Gitg
+
+вводим необходимые данные
+git config --global user.email "you@example.com"
+git config --global user.name "Ваше Имя"
+
+git config  --global core.editor vim
+git config  --global merge.tool vimdiff
+проверяем
+git config --list
 -----------------------------------------------
 посмотреть сгенерирован ли ключ здесь ssh
 $ cd ~/.ssh
 $ ls
 ---------------------------------------------------
+
+необходимо создать открытый и закрытый ключи для соединения с сервером по ssh
+ssh-keygen
+на сайте гитхаба создать ключ, используя открытый ключ:
+нужно скопировать содержимое открытого ключа и добавить в форме на сайте
+можно использовать утилиту xclip
+sudo apt-get install xclip
+далее 
+xclip -sel clip < ~/.ssh/id_rsa.pub
+содержимое ключа скопировано в буфер
+далее можно использовать вставку из буфера
+
+------------------------------------------------------------------------------
 
 git init
 git add .
@@ -16,10 +41,17 @@ git commit -a -m 'first commit'
 
 Для того, чтобы в систему не попадали временные файлы, можно их занести в файл .gitignore, который нужно создать самостоятельно и разместить в корневом каталоге проекта (на том же уровне, что и .git директория)
 
-qtcreator уже делает первые три пункта
-
 git remote add origin git@github.com:username/reponame.git
 git push -u origin master
+
+-----------------------------------------------------------------------------
+клонирование репозитория
+git clone git@github.com:nik_name/repo_name.git name_dir
+
+-------------------------------------------------------------------------------
+
+
+
 
 
 
