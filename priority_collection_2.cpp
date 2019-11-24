@@ -17,12 +17,29 @@ class PriorityCollection {
 public:
   using Id = T*;
 
+	PriorityCollection<T>(const PriorityCollection<T> &) = delete;
+	PriorityCollection<T>() = default; 
+	PriorityCollection<T> operator= (const PriorityCollection<T> &) = delete;
+	PriorityCollection<T> operator= (PriorityCollection<T> && other)
+	{
+		*data = *other.data;
+		*other.data = nullptr;
+		*priority_to_data = *other.priority_to_data;
+		*other.priority_to_data = nullptr;
+		*id_to_position = *other.id_to_position;
+		*other.id_to_position = nullptr;
+
+	}
+
   // Добавить объект с нулевым приоритетом
   // с помощью перемещения и вернуть его идентификатор
   Id Add(T object)
   {
 		auto it_obj = data.insert(data.end(), move(object));	
-		auto it_p_to_d = priority_to_data.insert({0, {it_obj}});
+		auto it_position = priority_to_data[0].insert(data.end(),it_obj);
+
+
+		return &data.back();
 	}
 
   // Добавить все элементы диапазона [range_begin, range_end)
@@ -67,7 +84,7 @@ private:
   // Приватные поля и методы
   list<T> data;
   map<int, list<typename list<T>::iterator>> priority_to_data;
-	map<Id, pair<typename map<int, list<typename list <T>::iterator>>::iterator, typename list<Id>::iterator>> id_to_position;
+	map<Id, typename list<T>::iterator> id_to_position;
 };
 
 
