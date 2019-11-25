@@ -15,7 +15,7 @@ using namespace std;
 template <typename T>
 class PriorityCollection {
 public:
-  using Id = T*;
+  using Id = typename list<T>::iterator;
 
 	PriorityCollection<T>(const PriorityCollection<T> &) = delete;
 	PriorityCollection<T>() = default; 
@@ -36,10 +36,10 @@ public:
   Id Add(T object)
   {
 		auto it_obj = data.insert(data.end(), move(object));	
-		auto it_position = priority_to_data[0].insert(data.end(),it_obj);
+		//auto it_position = priority_to_data[0].insert(data.end(),it_obj);
 
 
-		return &data.back();
+		return it_obj;
 	}
 
   // Добавить все элементы диапазона [range_begin, range_end)
