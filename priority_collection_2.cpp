@@ -15,7 +15,8 @@ using namespace std;
 template <typename T>
 class PriorityCollection {
 public:
-  using Id = typename list<T>::iterator;
+  using Id = T*;
+	using List_iterator = typename list<T>::iterator;
 
 	PriorityCollection<T>(const PriorityCollection<T> &) = delete;
 	PriorityCollection<T>() = default; 
@@ -36,10 +37,10 @@ public:
   Id Add(T object)
   {
 		auto it_obj = data.insert(data.end(), move(object));	
-		//auto it_position = priority_to_data[0].insert(data.end(),it_obj);
+		auto& ref_tmp_list = priority_to_data[0];
+		auto it_for_data = ref_tmp_list.insert(ref_tmp_list.end(), it_obj);
 
-
-		return it_obj;
+		return &data.back();
 	}
 
   // Добавить все элементы диапазона [range_begin, range_end)
@@ -83,8 +84,8 @@ public:
 private:
   // Приватные поля и методы
   list<T> data;
-  map<int, list<typename list<T>::iterator>> priority_to_data;
-	map<Id, typename list<T>::iterator> id_to_position;
+  map<int, list<List_iterator>> priority_to_data;
+	map<Id, typename list<T>::iterator> id_to_position;//to do
 };
 
 
