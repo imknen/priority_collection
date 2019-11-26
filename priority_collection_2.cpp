@@ -18,27 +18,24 @@ public:
   using Id = T*;
 	using List_iterator = typename list<T>::iterator;
 
-	PriorityCollection<T>(const PriorityCollection<T> &) = delete;
-	PriorityCollection<T>() = default; 
-	PriorityCollection<T> operator= (const PriorityCollection<T> &) = delete;
-	PriorityCollection<T> operator= (PriorityCollection<T> && other)
-	{
-		*data = *other.data;
-		*other.data = nullptr;
-		*priority_to_data = *other.priority_to_data;
-		*other.priority_to_data = nullptr;
-		*id_to_position = *other.id_to_position;
-		*other.id_to_position = nullptr;
+class InfoData {
+public:
+		list<List_iterator>& contain_pos = nullptr;
+		List_iterator position;
+		int priority;
 
-	}
-
+		InfoData& operator=(InfoData &) = default;
+	};
   // Добавить объект с нулевым приоритетом
   // с помощью перемещения и вернуть его идентификатор
   Id Add(T object)
   {
+
 		auto it_obj = data.insert(data.end(), move(object));	
 		auto& ref_tmp_list = priority_to_data[0];
 		auto it_for_data = ref_tmp_list.insert(ref_tmp_list.end(), it_obj);
+
+		id_to_position[&data.back()] = {ref_tmp_list, it_obj, 0};
 
 		return &data.back();
 	}
@@ -63,7 +60,7 @@ public:
   // Получить объект по идентификатору
   const T& Get(Id id) const
 	{
-	
+		return id;
 	}
 
   // Увеличить приоритет объекта на 1
@@ -72,20 +69,32 @@ public:
   // Получить объект с максимальным приоритетом и его приоритет
   pair<const T&, int> GetMax() const
 	{
-	
+		auto it = priority_to_data.rbegin();
+
+		return make_pair(&(*it.second.back()), *it.first);	
 	}
 
   // Аналогично GetMax, но удаляет элемент из контейнера
   pair<T, int> PopMax()
 	{
-	
+		auto it = make_move_iterator(priority_to_data.rbegin());
+		pair<T, int> ret = make_pair(move(*(*it).second.back()), (*it).first);	
+
+		auto info_data = id_to_position[&ret.first];
+		data.erase(info_data.position);
+
+		(*it).second.pop_back();
+
+		id_to_position.erase(&ret.first);
+
+		return ret;
 	}
 
 private:
   // Приватные поля и методы
   list<T> data;
   map<int, list<List_iterator>> priority_to_data;
-	map<Id, typename list<T>::iterator> id_to_position;//to do
+	map<Id, InfoData> id_to_position;
 };
 
 
