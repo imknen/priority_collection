@@ -61,8 +61,9 @@ public:
 		auto current_info = id_to_position[id];
 		auto& target_list = priority_to_data[current_info.priority+1];
 		auto new_position = target_list.insert(target_list.end(), current_info.it_for_data);
+		int new_priority = current_info.priority+1;
 
-		InfoData new_info{&target_list, new_position, current_info.it_for_data, ++current_info.priority};
+		InfoData new_info{&target_list, new_position, current_info.it_for_data, new_priority};
 
 		current_info.contain_pos->erase(current_info.position);
 
