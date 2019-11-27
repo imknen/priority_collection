@@ -18,14 +18,6 @@ public:
   using Id = T*;
 	using List_iterator = typename list<T>::iterator;
 
-class InfoData {
-public:
-		list<List_iterator>& contain_pos = nullptr;
-		List_iterator position;
-		int priority;
-
-		InfoData& operator=(InfoData &) = default;
-	};
   // Добавить объект с нулевым приоритетом
   // с помощью перемещения и вернуть его идентификатор
   Id Add(T object)
@@ -33,9 +25,9 @@ public:
 
 		auto it_obj = data.insert(data.end(), move(object));	
 		auto& ref_tmp_list = priority_to_data[0];
-		auto it_for_data = ref_tmp_list.insert(ref_tmp_list.end(), it_obj);
+		auto it_position = ref_tmp_list.insert(ref_tmp_list.end(), it_obj);
 
-		id_to_position[&data.back()] = {ref_tmp_list, it_obj, 0};
+		id_to_position[&data.back()] = {&ref_tmp_list, it_position, it_obj, 0};
 
 		return &data.back();
 	}
@@ -64,7 +56,18 @@ public:
 	}
 
   // Увеличить приоритет объекта на 1
-  void Promote(Id id);
+  void Promote(Id id)
+	{
+		auto current_info = id_to_position[id];
+		auto& target_list = priority_to_data[current_info.priority+1];
+		auto new_position = target_list.insert(target_list.end(), current_info.it_for_data);
+
+		InfoData new_info{&target_list, new_position, current_info.it_for_data, ++current_info.priority};
+
+		current_info.contain_pos->erase(current_info.position);
+
+		id_to_position[id] = new_info;
+	}
 
   // Получить объект с максимальным приоритетом и его приоритет
   pair<const T&, int> GetMax() const
@@ -81,7 +84,7 @@ public:
 		pair<T, int> ret = make_pair(move(*(*it).second.back()), (*it).first);	
 
 		auto info_data = id_to_position[&ret.first];
-		data.erase(info_data.position);
+		data.erase(info_data.it_for_data);
 
 		(*it).second.pop_back();
 
@@ -92,6 +95,13 @@ public:
 
 private:
   // Приватные поля и методы
+class InfoData {
+public:
+		list<List_iterator>* contain_pos;
+		typename list<List_iterator>::iterator position;
+		List_iterator it_for_data;
+		int priority;
+};
   list<T> data;
   map<int, list<List_iterator>> priority_to_data;
 	map<Id, InfoData> id_to_position;
@@ -137,6 +147,6 @@ void TestNoCopy() {
 
 int main() {
   TestRunner tr;
-  RUN_TEST(tr, TestNoCopy);
+  /*RUN_TEST(tr,*/ TestNoCopy();//);
   return 0;
 }
