@@ -23,7 +23,7 @@ public:
   Id Add(T object)
   {
 
-		auto it_obj = data.insert(data.end(), move(object));	
+		List_iterator it_obj = data.insert(data.end(), move(object));	
 		auto& ref_tmp_list = priority_to_data[0];
 		auto it_position = ref_tmp_list.insert(ref_tmp_list.end(), it_obj);
 
