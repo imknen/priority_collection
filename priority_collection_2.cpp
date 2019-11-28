@@ -85,7 +85,7 @@ public:
 		pair<T, int> ret = make_pair(move(*(*it).second.back()), (*it).first);	
 
 		auto info_data = id_to_position[&ret.first];
-		data.erase(info_data.it_for_data);
+		data.erase(info_data.it_for_data, info_data.it_for_data);
 
 		(*it).second.pop_back();
 
